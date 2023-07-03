@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.alitvinova.countriesapp.coutrieslist.presentation.CountriesListScreen
+import com.alitvinova.countriesapp.coutrieslist.presentation.CountriesListViewModel
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,8 +16,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CountriesAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    CountriesListScreen(CountriesListViewModel((application as App).repository))
                 }
             }
         }
