@@ -1,4 +1,4 @@
-package com.alitvinova.countriesapp.coutrieslist.presentation
+package com.alitvinova.countriesapp.presentation.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,13 +26,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.alitvinova.countriesapp.R
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
+import com.alitvinova.countriesapp.navigation.CountryInfoDestination
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
 
 @Composable
-fun CountriesListScreen(viewModel: CountriesListViewModel) {
+fun CountriesListScreen(
+    viewModel: CountriesListViewModel,
+    navController: NavController
+) {
     val state = viewModel.state.collectAsState().value
     Box {
         if (state.error != null) {
@@ -40,7 +45,11 @@ fun CountriesListScreen(viewModel: CountriesListViewModel) {
         } else {
             CountriesList(
                 countries = state.countries,
-                onCountryClick = viewModel::onCountryClick,
+                onCountryClick = {
+                    navController.navigate(
+                        route = CountryInfoDestination.createRoute(it.code),
+                    )
+                },
             )
         }
         if (state.loading)
@@ -121,7 +130,8 @@ private fun Error(onRetryClick: () -> Unit) = Box(contentAlignment = Alignment.C
 private fun ItemPreview() {
     CountriesAppTheme() {
         CountryItem(
-            CountryListItem(name = "Russia", flag = "https://flagcdn.com/ru.svg"), {}
+            country = CountryListItem(name = "Russia", flag = "https://flagcdn.com/ru.svg", code = "ru"),
+            onClick = {},
         )
     }
 }

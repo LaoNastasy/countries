@@ -1,8 +1,8 @@
 package com.alitvinova.countriesapp
 
 import android.app.Application
-import com.alitvinova.countriesapp.coutrieslist.data.Repository
-import com.alitvinova.countriesapp.coutrieslist.data.RepositoryImpl
+import com.alitvinova.countriesapp.data.Repository
+import com.alitvinova.countriesapp.data.RepositoryImpl
 import com.alitvinova.countriesapp.network.Api
 import com.alitvinova.countriesapp.network.RetrofitErrorHandler
 import okhttp3.OkHttpClient
@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class App : Application() {
 
-    lateinit var retrofit: Retrofit
+    private lateinit var retrofit: Retrofit
     lateinit var repository: Repository
 
     override fun onCreate() {

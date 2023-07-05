@@ -1,4 +1,4 @@
-package com.alitvinova.countriesapp.coutrieslist.presentation
+package com.alitvinova.countriesapp.presentation.list
 
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
 
