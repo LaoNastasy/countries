@@ -3,6 +3,8 @@
     <string name="error_text">Something went wrong</string>
     <string name="error_action">Try again</string>
 
+    <string name="country_list_search_hint">Enter search text</string>
+
     <string name="country_info_population">Population</string>
     <string name="country_info_map">Place on Google Map</string>
     <string name="country_info_languages">Languages</string>

@@ -25,6 +25,8 @@ class CountriesListViewModel(
 
     fun onRetryClick() = loadData()
 
+    fun onSearchStringChanged(string: String) = _state.update { it.copy(searchString = string) }
+
     private fun loadData() {
         viewModelScope.launch {
             _state.update { it.copy(error = null, loading = true) }

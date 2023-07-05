@@ -3,6 +3,7 @@ package com.alitvinova.countriesapp.presentation.list
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,15 +17,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.alitvinova.countriesapp.R
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
 import com.alitvinova.countriesapp.navigation.CountryInfoDestination
 import com.alitvinova.countriesapp.presentation.ErrorInfo
@@ -32,6 +41,9 @@ import com.alitvinova.countriesapp.presentation.Loader
 import com.alitvinova.countriesapp.ui.theme.BackgroundPrimary
 import com.alitvinova.countriesapp.ui.theme.BackgroundSecondary
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
+import com.alitvinova.countriesapp.ui.theme.Purple40
+import com.alitvinova.countriesapp.ui.theme.TextPrimary
+import com.alitvinova.countriesapp.ui.theme.TextSecondary
 import com.alitvinova.countriesapp.ui.theme.Typography
 
 @Composable
@@ -48,14 +60,23 @@ fun CountriesListScreen(
         if (state.error != null) {
             ErrorInfo(viewModel::onRetryClick)
         } else {
-            CountriesList(
-                countries = state.countries,
-                onCountryClick = {
-                    navController.navigate(
-                        route = CountryInfoDestination.createRoute(it.code),
-                    )
-                },
-            )
+            Column {
+                Spacer(Modifier.height(16.dp))
+                SearchTextField(
+                    text = state.searchString,
+                    onTextChanged = viewModel::onSearchStringChanged,
+                )
+                Spacer(Modifier.height(8.dp))
+                Divider(thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+                CountriesList(
+                    countries = state.filteredCountries,
+                    onCountryClick = {
+                        navController.navigate(
+                            route = CountryInfoDestination.createRoute(it.code),
+                        )
+                    },
+                )
+            }
         }
         if (state.loading) Loader()
     }
@@ -66,8 +87,8 @@ private fun CountriesList(
     countries: List<CountryListItem>,
     onCountryClick: (CountryListItem) -> Unit,
 ) = LazyColumn {
-    item { Spacer(Modifier.height(16.dp)) }
-    items(countries) { country ->
+    item { Spacer(Modifier.height(8.dp)) }
+    items(countries.sortedBy { it.name }) { country ->
         CountryItem(country = country, onClick = onCountryClick)
     }
 }
@@ -82,13 +103,14 @@ private fun CountryItem(
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .fillMaxWidth()
             .clickable { onClick(country) },
-        shape = RoundedCornerShape(6.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = BackgroundPrimary,
-        )
+            containerColor = BackgroundSecondary,
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
@@ -100,6 +122,40 @@ private fun CountryItem(
             Text(text = country.name, style = Typography.titleMedium)
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SearchTextField(
+    text: String,
+    onTextChanged: (String) -> Unit,
+) {
+    TextField(
+        value = text,
+        onValueChange = onTextChanged,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        placeholder = {
+            Text(
+                text = stringResource(R.string.country_list_search_hint),
+                style = Typography.titleMedium,
+                color = TextSecondary,
+            )
+        },
+        textStyle = Typography.titleMedium,
+        singleLine = true,
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = TextPrimary,
+            containerColor = BackgroundPrimary,
+            cursorColor = Purple40,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+        ),
+        shape = RoundedCornerShape(8.dp),
+        visualTransformation = VisualTransformation.None,
+    )
 }
 
 
