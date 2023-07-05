@@ -1,10 +1,12 @@
 package com.alitvinova.countriesapp.coutrieslist.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alitvinova.countriesapp.R
+import com.alitvinova.countriesapp.domain.entity.CountryListItem
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
 
 @Composable
@@ -35,13 +38,10 @@ fun CountriesListScreen(viewModel: CountriesListViewModel) {
         if (state.error != null) {
             Error(viewModel::onRetryClick)
         } else {
-            LazyColumn(
-                Modifier.background(Color(0xFFFFFFFF))
-            ) {
-                items(state.countries) { country ->
-                    CountryItem(name = country.name, imagePath = country.flag)
-                }
-            }
+            CountriesList(
+                countries = state.countries,
+                onCountryClick = viewModel::onCountryClick,
+            )
         }
         if (state.loading)
             CircularProgressIndicator(
@@ -56,30 +56,46 @@ fun CountriesListScreen(viewModel: CountriesListViewModel) {
 }
 
 @Composable
+private fun CountriesList(
+    countries: List<CountryListItem>,
+    onCountryClick: (CountryListItem) -> Unit,
+) {
+    LazyColumn(
+        Modifier.background(Color(0xFFFFFFFF))
+    ) {
+        item { Spacer(Modifier.height(16.dp)) }
+        items(countries) { country ->
+            CountryItem(country = country, onClick = onCountryClick)
+        }
+    }
+}
+
+@Composable
 private fun CountryItem(
-    name: String,
-    imagePath: String,
+    country: CountryListItem,
+    onClick: (CountryListItem) -> Unit,
 ) {
     Card(
         Modifier
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick(country) },
         shape = RoundedCornerShape(6.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xC6EFEFEF),
         )
     ) {
         Row(
-            modifier = Modifier.padding(all = 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = imagePath,
+                model = country.flag,
                 contentDescription = null,
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(48.dp),
             )
             Spacer(Modifier.width(16.dp))
-            Text(text = name)
+            Text(text = country.name)
         }
     }
 }
@@ -104,6 +120,8 @@ private fun Error(onRetryClick: () -> Unit) = Box(contentAlignment = Alignment.C
 @Composable
 private fun ItemPreview() {
     CountriesAppTheme() {
-        CountryItem(name = "Russia", imagePath = "https://flagcdn.com/ru.svg")
+        CountryItem(
+            CountryListItem(name = "Russia", flag = "https://flagcdn.com/ru.svg"), {}
+        )
     }
 }

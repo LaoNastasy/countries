@@ -3,6 +3,7 @@ package com.alitvinova.countriesapp.coutrieslist.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alitvinova.countriesapp.coutrieslist.data.Repository
+import com.alitvinova.countriesapp.domain.entity.CountryListItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,6 +20,8 @@ class CountriesListViewModel(
     }
 
     fun onRetryClick() = loadData()
+
+    fun onCountryClick(country: CountryListItem) {}
 
     private fun loadData() {
         viewModelScope.launch {
