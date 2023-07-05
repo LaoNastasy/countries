@@ -36,4 +36,7 @@ private fun CountryInfoModel.asDomainModel() = CountryInfo(
     coatOfArms = coatOfArms?.png,
     population = population,
     googleMapLink = maps?.googleMaps,
+    languages = languages,
+    capital = capital?.first(),
+    continents = continents,
 )

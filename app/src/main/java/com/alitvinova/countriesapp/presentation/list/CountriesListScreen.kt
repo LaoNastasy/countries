@@ -16,13 +16,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -30,6 +28,9 @@ import coil.compose.AsyncImage
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
 import com.alitvinova.countriesapp.navigation.CountryInfoDestination
 import com.alitvinova.countriesapp.presentation.ErrorInfo
+import com.alitvinova.countriesapp.presentation.Loader
+import com.alitvinova.countriesapp.ui.theme.BackgroundPrimary
+import com.alitvinova.countriesapp.ui.theme.BackgroundSecondary
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
 import com.alitvinova.countriesapp.ui.theme.Typography
 
@@ -39,7 +40,11 @@ fun CountriesListScreen(
     navController: NavController
 ) {
     val state = viewModel.state.collectAsState().value
-    Box(Modifier.fillMaxSize()) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(BackgroundSecondary)
+    ) {
         if (state.error != null) {
             ErrorInfo(viewModel::onRetryClick)
         } else {
@@ -52,30 +57,18 @@ fun CountriesListScreen(
                 },
             )
         }
-        if (state.loading)
-            CircularProgressIndicator(
-                color = Color(0xFF018786),
-                modifier = Modifier
-                    .size(40.dp)
-                    .align(Alignment.Center),
-                strokeWidth = 1.dp
-            )
+        if (state.loading) Loader()
     }
-
 }
 
 @Composable
 private fun CountriesList(
     countries: List<CountryListItem>,
     onCountryClick: (CountryListItem) -> Unit,
-) {
-    LazyColumn(
-        Modifier.background(Color(0xFFFFFFFF))
-    ) {
-        item { Spacer(Modifier.height(16.dp)) }
-        items(countries) { country ->
-            CountryItem(country = country, onClick = onCountryClick)
-        }
+) = LazyColumn {
+    item { Spacer(Modifier.height(16.dp)) }
+    items(countries) { country ->
+        CountryItem(country = country, onClick = onCountryClick)
     }
 }
 
@@ -91,7 +84,7 @@ private fun CountryItem(
             .clickable { onClick(country) },
         shape = RoundedCornerShape(6.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xC6EFEFEF),
+            containerColor = BackgroundPrimary,
         )
     ) {
         Row(

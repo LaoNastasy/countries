@@ -35,6 +35,13 @@ val Typography = Typography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
+    labelMedium = TextStyle(
+        fontFamily = ProximaNovaLight,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
     titleMedium = TextStyle(
         fontFamily = ProximaNovaRegular,
         fontWeight = FontWeight.Normal,
