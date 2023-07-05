@@ -31,6 +31,7 @@ import com.alitvinova.countriesapp.domain.entity.CountryListItem
 import com.alitvinova.countriesapp.navigation.CountryInfoDestination
 import com.alitvinova.countriesapp.presentation.ErrorInfo
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
+import com.alitvinova.countriesapp.ui.theme.Typography
 
 @Composable
 fun CountriesListScreen(
@@ -94,7 +95,7 @@ private fun CountryItem(
         )
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
@@ -103,7 +104,7 @@ private fun CountryItem(
                 modifier = Modifier.size(48.dp),
             )
             Spacer(Modifier.width(16.dp))
-            Text(text = country.name)
+            Text(text = country.name, style = Typography.titleMedium)
         }
     }
 }
