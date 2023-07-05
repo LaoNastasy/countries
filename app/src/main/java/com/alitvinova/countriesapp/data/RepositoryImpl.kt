@@ -20,20 +20,20 @@ class RepositoryImpl(
     override suspend fun getCountryInfoByCode(code: String): CountryInfo =
         retrofitErrorHandler.apiCall {
             api.getCountryInfo(code)
-        }.asDomainModel()
+        }.first().asDomainModel()
 }
 
 private fun CountryListItemModel.asDomainModel() = CountryListItem(
     name = name.common,
-    flag = flags.png,
+    flag = flags?.png,
     code = cca2,
 )
 
 private fun CountryInfoModel.asDomainModel() = CountryInfo(
     name = name.common,
     officialName = name.official,
-    flag = flags.png,
-    coatOfArms = coatOfArms.png,
+    flag = flags?.png,
+    coatOfArms = coatOfArms?.png,
     population = population,
-    googleMapLink = maps.googleMaps,
+    googleMapLink = maps?.googleMaps,
 )

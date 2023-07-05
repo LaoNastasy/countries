@@ -1,5 +1,6 @@
 package com.alitvinova.countriesapp.presentation.info
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -27,12 +28,15 @@ class CountryInfoViewModel(
         loadData()
     }
 
+    fun onReloadClick() = loadData()
+
     private fun loadData() = viewModelScope.launch {
         try {
             _state.update { it.copy(loading = true, error = null) }
             val info = repository.getCountryInfoByCode(code)
             _state.update { it.copy(info = info) }
         } catch (e: Exception) {
+            Log.e("COUNTRY_INFO_SCREEN", e.message ?: "")
             _state.update { it.copy(error = e) }
         } finally {
             _state.update { it.copy(loading = false) }

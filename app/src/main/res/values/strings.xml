@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">CountriesApp</string>
-    <string name="countries_list_error">Something went wrong</string>
-    <string name="countries_list_error_action">Try again</string>
+    <string name="error_text">Something went wrong</string>
+    <string name="error_action">Try again</string>
 </resources>
