@@ -93,9 +93,9 @@ private fun getImageIdByCountryCode(code: String): Int? {
             context.packageName
         )
 
-        if (id == 0) R.drawable.animation_xml else id
+        if (id == 0) R.drawable.default_map_animation else id
     } catch (e: Exception) {
-        R.drawable.animation_xml
+        R.drawable.default_map_animation
     }
 }
 
