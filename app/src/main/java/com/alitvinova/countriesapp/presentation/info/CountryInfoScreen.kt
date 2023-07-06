@@ -1,5 +1,11 @@
 package com.alitvinova.countriesapp.presentation.info
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,9 +21,15 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,10 +42,27 @@ import com.alitvinova.countriesapp.presentation.Loader
 import com.alitvinova.countriesapp.ui.theme.BackgroundPrimary
 import com.alitvinova.countriesapp.ui.theme.Purple40
 import com.alitvinova.countriesapp.ui.theme.Typography
+import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun CountryInfoScreen(viewModel: CountryInfoViewModel) {
     val state = viewModel.state.collectAsState().value
+    var atEnd by remember { mutableStateOf(false) }
+
+    val drawableResourceId = getImageIdByCountryCode(code = state.code)
+    if (drawableResourceId != null && drawableResourceId != 0) {
+        Image(
+            painter = rememberAnimatedVectorPainter(
+                animatedImageVector = AnimatedImageVector.animatedVectorResource(
+                    drawableResourceId
+                ),
+                atEnd = atEnd
+            ),
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
     Box(
         Modifier
             .fillMaxSize()
@@ -45,6 +74,28 @@ fun CountryInfoScreen(viewModel: CountryInfoViewModel) {
             Content(info = state.info)
         }
         if (state.loading) Loader()
+    }
+
+    LaunchedEffect(Unit) {
+        delay(100)
+        atEnd = !atEnd
+    }
+}
+
+@SuppressLint("DiscouragedApi")
+@Composable
+private fun getImageIdByCountryCode(code: String): Int? {
+    val context = LocalContext.current
+    return try {
+        val id = context.resources.getIdentifier(
+            "_" + code.lowercase(),
+            "drawable",
+            context.packageName
+        )
+
+        if (id == 0) R.drawable.animation_xml else id
+    } catch (e: Exception) {
+        R.drawable.animation_xml
     }
 }
 
