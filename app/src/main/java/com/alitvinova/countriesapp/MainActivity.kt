@@ -55,8 +55,7 @@ class MainActivity : ComponentActivity() {
                     route = destination.route(),
                     arguments = destination.arguments,
                 ) {
-
-                    entry.value(it.arguments)
+                    entry.value()
                 }
             }
         }
@@ -64,7 +63,7 @@ class MainActivity : ComponentActivity() {
 
     private fun destinations(
         navController: NavController,
-    ) = mapOf<NavigationDestination, @Composable (Bundle?) -> Unit>(
+    ) = mapOf<NavigationDestination, @Composable () -> Unit>(
         CountriesListDestination to {
             CountriesListScreen(
                 viewModel = viewModel(factory = CountriesListViewModel.Factory),
@@ -77,6 +76,4 @@ class MainActivity : ComponentActivity() {
             )
         }
     )
-
-
 }
