@@ -21,7 +21,7 @@ class CountryInfoViewModel(
     private val repository: Repository,
 ) : ViewModel() {
     private val code: String = savedStateHandle[CountryInfoDestination.CODE_ARG]!!
-    private val _state = MutableStateFlow(CountryInfoState())
+    private val _state = MutableStateFlow(CountryInfoState(code = code))
     val state = _state.asStateFlow()
 
     init {
