@@ -73,4 +73,5 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
     implementation "xerces:xercesImpl:2.12.2"
     implementation "androidx.compose.animation:animation-graphics:1.4.3"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 }

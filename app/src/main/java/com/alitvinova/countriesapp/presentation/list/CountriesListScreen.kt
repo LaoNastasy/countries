@@ -40,6 +40,7 @@ import com.alitvinova.countriesapp.presentation.ErrorInfo
 import com.alitvinova.countriesapp.presentation.Loader
 import com.alitvinova.countriesapp.ui.theme.BackgroundPrimary
 import com.alitvinova.countriesapp.ui.theme.BackgroundSecondary
+import com.alitvinova.countriesapp.ui.theme.BackgroundThirdly
 import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
 import com.alitvinova.countriesapp.ui.theme.Purple40
 import com.alitvinova.countriesapp.ui.theme.TextPrimary
@@ -100,14 +101,14 @@ private fun CountryItem(
 ) {
     Card(
         Modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 6.dp)
             .fillMaxWidth()
             .clickable { onClick(country) },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = BackgroundSecondary,
+            containerColor = BackgroundThirdly,
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
