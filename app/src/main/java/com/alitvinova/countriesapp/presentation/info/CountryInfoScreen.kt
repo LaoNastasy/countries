@@ -262,7 +262,7 @@ private fun ListFields(info: CountryInfo) {
             value = info.continents.joinToString(", "),
             image = {
                 Icon(
-                    painter = painterResource(R.drawable.map),
+                    painter = painterResource(R.drawable.continent_icon),
                     contentDescription = null,
                     tint = Purple40
                 )
