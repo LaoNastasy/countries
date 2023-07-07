@@ -27,27 +27,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.alitvinova.countriesapp.R
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
-import com.alitvinova.countriesapp.domain.entity.RegionalBloc
 import com.alitvinova.countriesapp.navigation.CountryInfoDestination
 import com.alitvinova.countriesapp.presentation.ErrorInfo
 import com.alitvinova.countriesapp.presentation.Loader
 import com.alitvinova.countriesapp.ui.theme.BackgroundPrimary
 import com.alitvinova.countriesapp.ui.theme.BackgroundSecondary
 import com.alitvinova.countriesapp.ui.theme.BackgroundThirdly
-import com.alitvinova.countriesapp.ui.theme.CountriesAppTheme
 import com.alitvinova.countriesapp.ui.theme.Purple40
 import com.alitvinova.countriesapp.ui.theme.TextPrimary
 import com.alitvinova.countriesapp.ui.theme.TextSecondary
@@ -95,6 +91,7 @@ private fun Content(
             true
         }
     )
+
     ModalBottomSheetLayout(
         sheetContent = {
             RegionalBlocsBottomSheet(viewModel = viewModel)
@@ -205,38 +202,3 @@ private fun SearchTextField(
     shape = RoundedCornerShape(8.dp),
     visualTransformation = VisualTransformation.None,
 )
-
-@ReadOnlyComposable
-@Composable
-fun RegionalBloc.toStringRes() = stringResource(
-    when (this) {
-        RegionalBloc.EU -> R.string.country_list_eu
-        RegionalBloc.EFTA -> R.string.country_list_efta
-        RegionalBloc.CARICOM -> R.string.country_list_caricom
-        RegionalBloc.PA -> R.string.country_list_pa
-        RegionalBloc.AU -> R.string.country_list_au
-        RegionalBloc.USAN -> R.string.country_list_usan
-        RegionalBloc.EEU -> R.string.country_list_eeu
-        RegionalBloc.AL -> R.string.country_list_al
-        RegionalBloc.ASEAN -> R.string.country_list_asean
-        RegionalBloc.CAIS -> R.string.country_list_cais
-        RegionalBloc.CEFTA -> R.string.country_list_cefta
-        RegionalBloc.NAFTA -> R.string.country_list_nafta
-        RegionalBloc.SAARC -> R.string.country_list_saarc
-    }
-)
-
-@Preview
-@Composable
-private fun ItemPreview() {
-    CountriesAppTheme() {
-        CountryItem(
-            country = CountryListItem(
-                name = "Russia",
-                flag = "https://flagcdn.com/ru.svg",
-                code = "ru"
-            ),
-            onClick = {},
-        )
-    }
-}

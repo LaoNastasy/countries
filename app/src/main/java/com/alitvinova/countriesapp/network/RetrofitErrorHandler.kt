@@ -27,5 +27,3 @@ class RetrofitErrorHandler {
 }
 
 object DomainException : Exception()
-
-

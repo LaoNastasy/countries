@@ -32,34 +32,29 @@ class CountriesListViewModel(
 
     fun onFillerHide() = _state.update { it.copy(openRegionFilers = false) }
 
-    fun onBlocClick(bloc: RegionalBloc) {
+    fun onBlocClick(bloc: RegionalBloc) =
         _state.update { it.copy(filter = if (it.filter == bloc) null else bloc) }
-    }
 
     fun onFiltersChosen() {
-        _state.update {
-            it.copy(appliedFilter = state.value.filter)
-        }
+        _state.update { it.copy(appliedFilter = state.value.filter) }
         loadData()
         onFillerHide()
     }
 
-    private fun loadData() {
-        viewModelScope.launch {
-            _state.update { it.copy(error = null, loading = true) }
-            try {
-                val filter = state.value.appliedFilter
-                val countries = if (filter != null) {
-                    repository.getBlocCountries(filter)
-                } else {
-                    repository.getAllCountries()
-                }
-                _state.update { it.copy(countries = countries) }
-            } catch (e: Exception) {
-                _state.update { it.copy(error = e) }
-            } finally {
-                _state.update { it.copy(loading = false) }
+    private fun loadData() = viewModelScope.launch {
+        _state.update { it.copy(error = null, loading = true) }
+        try {
+            val filter = state.value.appliedFilter
+            val countries = if (filter != null) {
+                repository.getBlocCountries(filter)
+            } else {
+                repository.getAllCountries()
             }
+            _state.update { it.copy(countries = countries) }
+        } catch (e: Exception) {
+            _state.update { it.copy(error = e) }
+        } finally {
+            _state.update { it.copy(loading = false) }
         }
     }
 

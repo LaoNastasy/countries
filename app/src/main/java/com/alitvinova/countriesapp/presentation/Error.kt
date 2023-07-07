@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alitvinova.countriesapp.R
+import com.alitvinova.countriesapp.ui.theme.Typography
 
 @Composable
 fun ErrorInfo(onRetryClick: () -> Unit) = Column(
@@ -26,7 +27,8 @@ fun ErrorInfo(onRetryClick: () -> Unit) = Column(
             .padding(16.dp),
     ) {
         Text(
-            text = stringResource(R.string.error_action)
+            text = stringResource(R.string.error_action),
+            style = Typography.titleMedium
         )
     }
 }

@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alitvinova.countriesapp.ui.theme.Purple100
+import com.alitvinova.countriesapp.ui.theme.PurpleBackground
 import com.alitvinova.countriesapp.ui.theme.Purple40
 import com.alitvinova.countriesapp.ui.theme.TextPrimary
 import com.alitvinova.countriesapp.ui.theme.Typography
@@ -26,7 +26,7 @@ fun FilterBadge(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
-            containerColor = if (checked) Purple40 else Purple100
+            containerColor = if (checked) Purple40 else PurpleBackground
         )
     ) {
         Text(

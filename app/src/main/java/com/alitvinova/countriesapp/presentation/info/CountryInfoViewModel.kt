@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val TAG = "COUNTRY_INFO_SCREEN"
+
 class CountryInfoViewModel(
     savedStateHandle: SavedStateHandle,
     private val repository: Repository,
@@ -36,7 +38,7 @@ class CountryInfoViewModel(
             val info = repository.getCountryInfoByCode(code)
             _state.update { it.copy(info = info) }
         } catch (e: Exception) {
-            Log.e("COUNTRY_INFO_SCREEN", e.message ?: "")
+            Log.e(TAG, e.message ?: "")
             _state.update { it.copy(error = e) }
         } finally {
             _state.update { it.copy(loading = false) }

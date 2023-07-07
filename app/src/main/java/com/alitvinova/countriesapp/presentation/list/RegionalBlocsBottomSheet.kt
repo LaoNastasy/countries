@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alitvinova.countriesapp.R
 import com.alitvinova.countriesapp.domain.entity.RegionalBloc
-import com.alitvinova.countriesapp.ui.theme.Purple100
+import com.alitvinova.countriesapp.ui.theme.PurpleBackground
 import com.alitvinova.countriesapp.ui.theme.Purple40
 import com.alitvinova.countriesapp.ui.theme.PurpleGrey40
 import com.alitvinova.countriesapp.ui.theme.TextPrimary
@@ -32,16 +32,18 @@ fun RegionalBlocsBottomSheet(viewModel: CountriesListViewModel) {
     val state = viewModel.state.collectAsState().value
     val blocks = RegionalBloc.values().toList().map { Pair(it, state.filter == it) }
     Column {
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp))
         Text(
             text = stringResource(R.string.country_list_regional_bloc),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             style = Typography.titleLarge
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp))
         FlowRow(
-            Modifier.padding(horizontal = 16.dp), mainAxisSpacing = 4.dp, crossAxisSpacing = 8.dp
+            modifier = Modifier.padding(horizontal = 16.dp),
+            mainAxisSpacing = 4.dp,
+            crossAxisSpacing = 8.dp,
         ) {
             blocks.forEach { (bloc, selected) ->
                 Surface(
@@ -49,7 +51,7 @@ fun RegionalBlocsBottomSheet(viewModel: CountriesListViewModel) {
                     color = if (selected) {
                         Purple40
                     } else {
-                        Purple100
+                        PurpleBackground
                     },
                 ) {
                     Text(
@@ -62,9 +64,9 @@ fun RegionalBlocsBottomSheet(viewModel: CountriesListViewModel) {
                     )
                 }
             }
-
         }
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(Modifier.height(8.dp))
         Button(
             onClick = viewModel::onFiltersChosen,
             modifier = Modifier

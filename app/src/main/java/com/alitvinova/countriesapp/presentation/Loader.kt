@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.alitvinova.countriesapp.ui.theme.Purple40
 
 @Composable
-fun Loader(modifier: Modifier = Modifier) = Box(modifier = modifier.fillMaxSize()) {
+fun Loader(modifier: Modifier = Modifier) = Box(modifier.fillMaxSize()) {
     CircularProgressIndicator(
         color = Purple40,
         modifier = Modifier

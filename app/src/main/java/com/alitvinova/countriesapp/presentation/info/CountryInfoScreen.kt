@@ -78,9 +78,7 @@ fun CountryInfoScreen(
             Content(
                 info = state.info,
                 countryCode = state.code,
-                onBackClick = {
-                    navController.navigateUp()
-                }
+                onBackClick = { navController.navigateUp() }
             )
         }
         if (state.loading) Loader()
@@ -152,7 +150,7 @@ private fun Content(
             ) {
                 Spacer(Modifier.height(16.dp))
                 Text(text = info.name, style = Typography.titleLarge, textAlign = TextAlign.Center)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
                 if (info.name != info.officialName) {
                     Text(
                         text = info.officialName,
@@ -284,7 +282,7 @@ private fun InfoItem(
     onClick: () -> Unit = {},
 ) = Column(Modifier.fillMaxWidth()) {
     Row(
-        Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (image != null) {
@@ -297,24 +295,27 @@ private fun InfoItem(
                 style = Typography.labelMedium
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(Modifier.height(4.dp))
             if (clickable) {
-                ClickableText(text = buildAnnotatedString {
-                    pushStringAnnotation(tag = "link", annotation = value)
-                    withStyle(
-                        style = SpanStyle(
-                            textDecoration = TextDecoration.Underline,
-                            fontFamily = Typography.bodyLarge.fontFamily,
-                            fontSize = Typography.bodyLarge.fontSize,
-                            fontWeight = Typography.bodyLarge.fontWeight,
-                            fontStyle = Typography.bodyLarge.fontStyle,
-                            fontSynthesis = Typography.bodyLarge.fontSynthesis,
-                            fontFeatureSettings = Typography.bodyLarge.fontFeatureSettings
-                        ), block = {
-                            append(value)
-                        }
-                    )
-                }, onClick = { onClick() })
+                ClickableText(
+                    text = buildAnnotatedString {
+                        pushStringAnnotation(tag = "link", annotation = value)
+                        withStyle(
+                            style = SpanStyle(
+                                textDecoration = TextDecoration.Underline,
+                                fontFamily = Typography.bodyLarge.fontFamily,
+                                fontSize = Typography.bodyLarge.fontSize,
+                                fontWeight = Typography.bodyLarge.fontWeight,
+                                fontStyle = Typography.bodyLarge.fontStyle,
+                                fontSynthesis = Typography.bodyLarge.fontSynthesis,
+                                fontFeatureSettings = Typography.bodyLarge.fontFeatureSettings
+                            ), block = {
+                                append(value)
+                            }
+                        )
+                    },
+                    onClick = { onClick() }
+                )
             } else {
                 Text(text = value, style = Typography.bodyLarge)
             }

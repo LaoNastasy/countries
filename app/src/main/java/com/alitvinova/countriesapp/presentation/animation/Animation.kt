@@ -49,11 +49,8 @@ fun generateAnimationXml(
     val viewportHeight =
         vector.attributes.getNamedItem("android:viewportHeight").nodeValue.toDouble()
 
-    val group = vector
-        .childNodes.item(1)
-
+    val group = vector.childNodes.item(1)
     val paths = group.childNodes
-
 
     var leftBorder = Double.MAX_VALUE
     var rightBorder = Double.MIN_VALUE
@@ -68,13 +65,12 @@ fun generateAnimationXml(
             && path.attributes.getNamedItem("android:name").nodeValue.startsWith(countryCode)
         ) {
             val d = path.attributes.getNamedItem("android:pathData").nodeValue
-            println(d)
 
             val p = Pattern.compile("[ML] (\\d+(\\.\\d+)?) (\\d+(\\.\\d+)?)")
             val m = p.matcher(d)
             while (m.find()) {
-                val x = m.group(1).toDouble()
-                val y = m.group(3).toDouble()
+                val x = m.group(1)!!.toDouble()
+                val y = m.group(3)!!.toDouble()
 
                 leftBorder = leftBorder.coerceAtMost(x)
                 rightBorder = rightBorder.coerceAtLeast(x)
@@ -92,19 +88,13 @@ fun generateAnimationXml(
     val countryWidth = rightBorder - leftBorder
     val countryHeight = bottomBorder - topBorder
 
-    println("$leftBorder $rightBorder $topBorder $bottomBorder       $countryWidth $countryHeight")
-
-
-//    val leftViewBorder = leftBorder - countryWidth*paddingPercentage
     var viewWidth = countryWidth + countryWidth * paddingPercentage * 2
-//    val topViewBorder = topBorder - countryHeight*paddingPercentage
     var viewHeight = countryHeight + countryHeight * paddingPercentage * 2
 
 
     val scaleX = viewportWidth / (countryWidth * (1 + paddingPercentage * 2))
     val scaleY = viewportHeight / (countryHeight * (1 + paddingPercentage * 2))
     val scale = scaleX.coerceAtMost(scaleY)
-    println("scaleX: $scaleX, scaleY: $scaleY")
 
     if (scaleX > scaleY) {
         viewWidth = viewHeight * viewportWidth / viewportHeight
@@ -112,13 +102,8 @@ fun generateAnimationXml(
         viewHeight = viewWidth * viewportHeight / viewportWidth
     }
 
-    println("viewWidth: $viewWidth, viewHeight: $viewHeight")
-    println("countryWidth: $countryWidth, countryHeight: $countryHeight")
-
     val leftViewBorder = leftBorder - (viewWidth / 2 - countryWidth / 2)
     val topViewBorder = topBorder - (viewHeight / 2 - countryHeight / 2)
-
-    println("leftViewBOrder: $leftViewBorder, topViewBorder: $topViewBorder")
 
     val translateX = -leftViewBorder
     val translateY = -topViewBorder
@@ -137,7 +122,6 @@ fun generateAnimationXml(
         ---------------------------------
     """.trimIndent()
     )
-    println(scale)
 
     val objectAnimatorSet = doc
         .childNodes.item(0)
@@ -182,11 +166,8 @@ fun generateAnimationXml(
                 "pivotX" -> addAttrib("android:valueTo", pivotX.toString())
                 "pivotY" -> addAttrib("android:valueTo", pivotY.toString())
             }
-            println(objectAnimatorSet.item(i).attributes.getNamedItem("android:propertyName").nodeValue)
         }
     }
-    println(objectAnimatorSet)
-
 
     val domSource = DOMSource(doc)
     val writer = StringWriter()

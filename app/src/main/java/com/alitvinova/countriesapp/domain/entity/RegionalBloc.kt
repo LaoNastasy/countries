@@ -1,17 +1,17 @@
 package com.alitvinova.countriesapp.domain.entity
 
 enum class RegionalBloc {
-    EU,
-    EFTA,
-    CARICOM,
-    PA,
-    AU,
-    USAN,
-    EEU,
     AL,
+    AU,
     ASEAN,
     CAIS,
     CEFTA,
+    CARICOM,
+    EU,
+    EEU,
+    EFTA,
     NAFTA,
-    SAARC;
+    PA,
+    SAARC,
+    USAN;
 }
