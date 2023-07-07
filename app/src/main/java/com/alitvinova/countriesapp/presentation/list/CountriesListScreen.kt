@@ -61,7 +61,11 @@ fun CountriesListScreen(
             .background(BackgroundSecondary)
     ) {
         if (state.error != null) {
-            ErrorInfo(viewModel::onRetryClick)
+            ErrorInfo(
+                error = state.error,
+                onRetryClick = viewModel::onRetryClick,
+                modifier = Modifier.fillMaxSize(),
+            )
         } else if (state.countries.isNotEmpty()) {
             Content(
                 state = state,

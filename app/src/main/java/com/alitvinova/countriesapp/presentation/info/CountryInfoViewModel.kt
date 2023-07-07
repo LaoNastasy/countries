@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alitvinova.countriesapp.App
 import com.alitvinova.countriesapp.data.Repository
 import com.alitvinova.countriesapp.navigation.CountryInfoDestination
+import com.alitvinova.countriesapp.network.DomainException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -37,7 +38,7 @@ class CountryInfoViewModel(
             _state.update { it.copy(loading = true, error = null) }
             val info = repository.getCountryInfoByCode(code)
             _state.update { it.copy(info = info) }
-        } catch (e: Exception) {
+        } catch (e: DomainException) {
             Log.e(TAG, e.message ?: "")
             _state.update { it.copy(error = e) }
         } finally {

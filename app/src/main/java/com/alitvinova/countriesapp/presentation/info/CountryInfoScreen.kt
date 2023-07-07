@@ -60,6 +60,8 @@ import com.alitvinova.countriesapp.ui.theme.Purple40
 import com.alitvinova.countriesapp.ui.theme.Typography
 import kotlinx.coroutines.delay
 
+private const val TAG_START_ACTIVITY = "START ACTIVITY"
+
 @Composable
 fun CountryInfoScreen(
     viewModel: CountryInfoViewModel,
@@ -73,7 +75,11 @@ fun CountryInfoScreen(
             .background(BackgroundPrimary)
     ) {
         if (state.error != null) {
-            ErrorInfo(viewModel::onReloadClick)
+            ErrorInfo(
+                error = state.error,
+                onRetryClick = viewModel::onReloadClick,
+                modifier = Modifier.fillMaxSize(),
+            )
         } else if (state.info != null) {
             Content(
                 info = state.info,
@@ -331,7 +337,7 @@ fun Context.tryStartActivityUrl(
     try {
         AndroidUriHandler(this).openUri(url)
     } catch (e: ActivityNotFoundException) {
-        Log.e("START ACTIVITY", e.message ?: "")
+        Log.e(TAG_START_ACTIVITY, e.message ?: "")
         Toast.makeText(this, this.resources.getText(errorMessageRes), Toast.LENGTH_SHORT).show()
     }
 }

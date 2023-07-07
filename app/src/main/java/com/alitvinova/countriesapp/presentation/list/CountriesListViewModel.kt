@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alitvinova.countriesapp.App
 import com.alitvinova.countriesapp.data.Repository
 import com.alitvinova.countriesapp.domain.entity.RegionalBloc
+import com.alitvinova.countriesapp.network.DomainException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -51,7 +52,7 @@ class CountriesListViewModel(
                 repository.getAllCountries()
             }
             _state.update { it.copy(countries = countries) }
-        } catch (e: Exception) {
+        } catch (e: DomainException) {
             _state.update { it.copy(error = e) }
         } finally {
             _state.update { it.copy(loading = false) }

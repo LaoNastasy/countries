@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Countries Demo</string>
-    <string name="error_text">Something went wrong</string>
+    <string name="error_text_unknown">Something went wrong</string>
+    <string name="error_text_timeout">Waiting too long</string>
+    <string name="error_text_no_connection">There is no connection to server</string>
     <string name="error_action">Try again</string>
 
     <string name="country_list_search_hint">Enter search text</string>
