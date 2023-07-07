@@ -1,5 +1,6 @@
 package com.alitvinova.countriesapp.network.entity
 
 data class Maps(
-    val googleMaps: String,
+    var googleMaps: String? = null,
+    var openStreetMaps: String? = null
 )

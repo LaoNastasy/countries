@@ -4,8 +4,10 @@ import com.alitvinova.countriesapp.domain.entity.CountryInfo
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
 import com.alitvinova.countriesapp.network.Api
 import com.alitvinova.countriesapp.network.RetrofitErrorHandler
-import com.alitvinova.countriesapp.network.entity.CountryInfoModel
-import com.alitvinova.countriesapp.network.entity.CountryListItemModel
+import com.alitvinova.countriesapp.network.entity.all.CountryListItemModel
+import com.alitvinova.countriesapp.network.entity.bloc.CountryBlocListItemModel
+import com.alitvinova.countriesapp.network.entity.info.CountryInfoModel
+import com.alitvinova.countriesapp.presentation.list.RegionalBloc
 
 class RepositoryImpl(
     private val retrofitErrorHandler: RetrofitErrorHandler,
@@ -21,12 +23,23 @@ class RepositoryImpl(
         retrofitErrorHandler.apiCall {
             api.getCountryInfo(code)
         }.first().asDomainModel()
+
+    override suspend fun getBlocCountries(bloc: RegionalBloc): List<CountryListItem> =
+        retrofitErrorHandler.apiCall {
+            api.getFilteredCountries(bloc.toServerModel())
+        }.map(CountryBlocListItemModel::asDomainModel)
 }
 
 private fun CountryListItemModel.asDomainModel() = CountryListItem(
-    name = name.common,
+    name = name?.common ?: "",
     flag = flags?.png,
-    code = cca2,
+    code = requireNotNull(cca2),
+)
+
+private fun CountryBlocListItemModel.asDomainModel() = CountryListItem(
+    name = name ?: "",
+    flag = flags?.png,
+    code = requireNotNull(alpha2Code),
 )
 
 private fun CountryInfoModel.asDomainModel() = CountryInfo(
@@ -40,3 +53,19 @@ private fun CountryInfoModel.asDomainModel() = CountryInfo(
     capital = capital?.first(),
     continents = continents,
 )
+
+private fun RegionalBloc.toServerModel(): String = when (this) {
+    RegionalBloc.EU -> "eu"
+    RegionalBloc.EFTA -> "efta"
+    RegionalBloc.CARICOM -> "caricom"
+    RegionalBloc.PA -> "pa"
+    RegionalBloc.AU -> "au"
+    RegionalBloc.USAN -> "usan"
+    RegionalBloc.EEU -> "eeu"
+    RegionalBloc.AL -> "al"
+    RegionalBloc.ASEAN -> "asean"
+    RegionalBloc.CAIS -> "cais"
+    RegionalBloc.CEFTA -> "cefta"
+    RegionalBloc.NAFTA -> "nafta"
+    RegionalBloc.SAARC -> "saarc"
+}

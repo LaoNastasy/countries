@@ -27,11 +27,29 @@ class CountriesListViewModel(
 
     fun onSearchStringChanged(string: String) = _state.update { it.copy(searchString = string) }
 
+    fun onFilterClick() = _state.update { it.copy(openRegionFilers = true) }
+
+    fun onFillerHide() = _state.update { it.copy(openRegionFilers = false) }
+
+    fun onBlocClick(bloc: RegionalBloc) {
+        _state.update { it.copy(filter = if (it.filter == bloc) null else bloc) }
+    }
+
+    fun onFiltersChosen() {
+        loadData()
+        onFillerHide()
+    }
+
     private fun loadData() {
         viewModelScope.launch {
             _state.update { it.copy(error = null, loading = true) }
             try {
-                val countries = repository.getAllCountries()
+                val filter = state.value.filter
+                val countries = if (filter != null) {
+                    repository.getBlocCountries(filter)
+                } else {
+                    repository.getAllCountries()
+                }
                 _state.update { it.copy(countries = countries) }
             } catch (e: Exception) {
                 _state.update { it.copy(error = e) }

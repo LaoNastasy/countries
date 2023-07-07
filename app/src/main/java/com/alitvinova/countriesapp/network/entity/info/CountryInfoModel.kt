@@ -1,4 +1,7 @@
-package com.alitvinova.countriesapp.network.entity
+package com.alitvinova.countriesapp.network.entity.info
+
+import com.alitvinova.countriesapp.network.entity.ImageLinks
+import com.alitvinova.countriesapp.network.entity.Maps
 
 data class CountryInfoModel(
     val name: Name,

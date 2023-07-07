@@ -7,7 +7,25 @@ data class CountriesListState(
     val countries: List<CountryListItem> = emptyList(),
     val error: Exception? = null,
     val searchString: String = "",
+    val filter: RegionalBloc? = null,
+    val openRegionFilers: Boolean = false,
 ) {
     val filteredCountries: List<CountryListItem>
         get() = countries.filter { it.name.contains(searchString, ignoreCase = true) }
+}
+
+enum class RegionalBloc {
+    EU,
+    EFTA,
+    CARICOM,
+    PA,
+    AU,
+    USAN,
+    EEU,
+    AL,
+    ASEAN,
+    CAIS,
+    CEFTA,
+    NAFTA,
+    SAARC;
 }

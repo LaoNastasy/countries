@@ -16,3 +16,4 @@ val BackgroundThirdly = Color(0xFFF0F0F0)
 
 val TextPrimary = Color(0xFF303030)
 val TextSecondary = Color(0xFF616161)
+val White = Color(0xFFFFFFFF)

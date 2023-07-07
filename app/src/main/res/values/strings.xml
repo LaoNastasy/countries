@@ -4,6 +4,21 @@
     <string name="error_action">Try again</string>
 
     <string name="country_list_search_hint">Enter search text</string>
+    <string name="country_list_regional_bloc">Regional blocs</string>
+    <string name="country_list_eu">European Union</string>
+    <string name="country_list_efta">European Free Trade Association</string>
+    <string name="country_list_caricom">Caribbean Community</string>
+    <string name="country_list_pa">Pacific Alliance</string>
+    <string name="country_list_au">African Union</string>
+    <string name="country_list_usan">Union of South American Nations</string>
+    <string name="country_list_eeu">Eurasian Economic Union</string>
+    <string name="country_list_al">Arab League</string>
+    <string name="country_list_asean">Association of Southeast Asian Nations</string>
+    <string name="country_list_cais">Central American Integration System</string>
+    <string name="country_list_cefta">Central European Free Trade Agreement</string>
+    <string name="country_list_nafta">North American Free Trade Agreement</string>
+    <string name="country_list_saarc">South Asian Association for Regional Cooperation</string>
+    <string name="country_list_filter_apply">Apply</string>
 
     <string name="country_info_population">Population</string>
     <string name="country_info_map">Place on Google Map</string>

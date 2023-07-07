@@ -53,10 +53,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'androidx.activity:activity-compose:1.7.2'
     implementation platform('androidx.compose:compose-bom:2022.10.00')
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
+    def composeVersion = "1.4.3"
+    implementation "androidx.compose.ui:ui:$composeVersion"
+    implementation "androidx.compose.ui:ui-graphics:$composeVersion"
+    implementation "androidx.compose.ui:ui-tooling-preview:$composeVersion"
+    implementation "androidx.compose.material3:material3:1.1.0"
+    implementation "androidx.compose.animation:animation-graphics:$composeVersion"
+    implementation "androidx.compose.material:material:$composeVersion"
     def retrofitVersion = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -72,6 +75,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.6.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
     implementation "xerces:xercesImpl:2.12.2"
-    implementation "androidx.compose.animation:animation-graphics:1.4.3"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "com.google.accompanist:accompanist-flowlayout:0.25.1"
 }

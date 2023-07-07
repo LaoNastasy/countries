@@ -14,11 +14,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -61,25 +65,64 @@ fun CountriesListScreen(
         if (state.error != null) {
             ErrorInfo(viewModel::onRetryClick)
         } else {
-            Column {
-                Spacer(Modifier.height(16.dp))
-                SearchTextField(
-                    text = state.searchString,
-                    onTextChanged = viewModel::onSearchStringChanged,
-                )
-                Spacer(Modifier.height(8.dp))
-                Divider(thickness = 2.dp, modifier = Modifier.fillMaxWidth())
-                CountriesList(
-                    countries = state.filteredCountries,
-                    onCountryClick = {
-                        navController.navigate(
-                            route = CountryInfoDestination.createRoute(it.code),
-                        )
-                    },
-                )
-            }
+            Content(
+                state = state,
+                viewModel = viewModel,
+                onCountryClick = {
+                    navController.navigate(
+                        route = CountryInfoDestination.createRoute(it.code),
+                    )
+                },
+            )
         }
         if (state.loading) Loader()
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun Content(
+    state: CountriesListState,
+    viewModel: CountriesListViewModel,
+    onCountryClick: (CountryListItem) -> Unit
+) {
+    val chooseFilterSheetState = rememberModalBottomSheetState(
+        initialValue = if (state.openRegionFilers) ModalBottomSheetValue.Expanded else ModalBottomSheetValue.Hidden,
+        confirmValueChange = { value ->
+            if (value == ModalBottomSheetValue.Hidden) viewModel.onFillerHide()
+            true
+        }
+    )
+    ModalBottomSheetLayout(
+        sheetContent = {
+            RegionalBlocsBottomSheet(viewModel = viewModel)
+        },
+        sheetShape = RoundedCornerShape(12.dp).copy(
+            bottomStart = CornerSize(0.dp),
+            bottomEnd = CornerSize(0.dp)
+        ),
+        sheetState = chooseFilterSheetState,
+    ) {
+        Column {
+            Spacer(Modifier.height(16.dp))
+            SearchTextField(
+                text = state.searchString,
+                onTextChanged = viewModel::onSearchStringChanged,
+            )
+            Spacer(Modifier.height(8.dp))
+            FilterBadge(
+                checked = state.filter != null,
+                placeholder = stringResource(R.string.country_list_regional_bloc),
+                onClick = viewModel::onFilterClick,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(Modifier.height(8.dp))
+            Divider(thickness = 2.dp, modifier = Modifier.fillMaxWidth())
+            CountriesList(
+                countries = state.filteredCountries,
+                onCountryClick = onCountryClick,
+            )
+        }
     }
 }
 
@@ -125,7 +168,6 @@ private fun CountryItem(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTextField(
     text: String,
@@ -146,9 +188,12 @@ private fun SearchTextField(
         },
         textStyle = Typography.titleMedium,
         singleLine = true,
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = TextPrimary,
-            containerColor = BackgroundPrimary,
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = TextPrimary,
+            unfocusedTextColor = TextPrimary,
+            focusedContainerColor = BackgroundPrimary,
+            unfocusedContainerColor = BackgroundPrimary,
+            disabledContainerColor = BackgroundPrimary,
             cursorColor = Purple40,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
@@ -159,6 +204,24 @@ private fun SearchTextField(
     )
 }
 
+@Composable
+fun RegionalBloc.toStringRes() = stringResource(
+    when (this) {
+        RegionalBloc.EU -> R.string.country_list_eu
+        RegionalBloc.EFTA -> R.string.country_list_efta
+        RegionalBloc.CARICOM -> R.string.country_list_caricom
+        RegionalBloc.PA -> R.string.country_list_pa
+        RegionalBloc.AU -> R.string.country_list_au
+        RegionalBloc.USAN -> R.string.country_list_usan
+        RegionalBloc.EEU -> R.string.country_list_eeu
+        RegionalBloc.AL -> R.string.country_list_al
+        RegionalBloc.ASEAN -> R.string.country_list_asean
+        RegionalBloc.CAIS -> R.string.country_list_cais
+        RegionalBloc.CEFTA -> R.string.country_list_cefta
+        RegionalBloc.NAFTA -> R.string.country_list_nafta
+        RegionalBloc.SAARC -> R.string.country_list_saarc
+    }
+)
 
 @Preview
 @Composable
