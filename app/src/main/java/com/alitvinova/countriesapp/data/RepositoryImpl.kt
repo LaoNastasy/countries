@@ -2,12 +2,12 @@ package com.alitvinova.countriesapp.data
 
 import com.alitvinova.countriesapp.domain.entity.CountryInfo
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
+import com.alitvinova.countriesapp.domain.entity.RegionalBloc
 import com.alitvinova.countriesapp.network.Api
 import com.alitvinova.countriesapp.network.RetrofitErrorHandler
 import com.alitvinova.countriesapp.network.entity.all.CountryListItemModel
 import com.alitvinova.countriesapp.network.entity.bloc.CountryBlocListItemModel
 import com.alitvinova.countriesapp.network.entity.info.CountryInfoModel
-import com.alitvinova.countriesapp.presentation.list.RegionalBloc
 
 class RepositoryImpl(
     private val retrofitErrorHandler: RetrofitErrorHandler,

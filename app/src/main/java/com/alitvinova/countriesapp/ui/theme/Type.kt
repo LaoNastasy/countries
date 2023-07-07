@@ -49,4 +49,11 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    labelLarge = TextStyle(
+        fontFamily = ProximaNovaLight,
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
 )

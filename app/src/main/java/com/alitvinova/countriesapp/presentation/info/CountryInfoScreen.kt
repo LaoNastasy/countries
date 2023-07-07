@@ -109,8 +109,7 @@ private fun Content(info: CountryInfo, countryCode: String) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Spacer(Modifier.height(16.dp))
                 Text(text = info.name, style = Typography.titleLarge, textAlign = TextAlign.Center)
@@ -130,8 +129,7 @@ private fun Content(info: CountryInfo, countryCode: String) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
-
-            ) {
+        ) {
             Spacer(Modifier.width(16.dp))
             AsyncImage(
                 model = info.flag,
@@ -235,25 +233,23 @@ private fun InfoItem(
     title: String?,
     value: String,
     image: (@Composable () -> Unit)? = null
-) {
-    Column(Modifier.fillMaxWidth()) {
-        Row(
-            Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (image != null) {
-                image()
-                Spacer(Modifier.width(12.dp))
-            }
-            Column {
-                if (title != null) {
-                    Text(text = title, style = Typography.labelMedium)
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
-                Text(text = value, style = Typography.bodyLarge)
-            }
+) = Column(Modifier.fillMaxWidth()) {
+    Row(
+        Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (image != null) {
+            image()
+            Spacer(Modifier.width(12.dp))
         }
-        Divider(thickness = 1.dp, modifier = Modifier.padding(start = 16.dp))
+        Column {
+            if (title != null) {
+                Text(text = title, style = Typography.labelMedium)
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+            Text(text = value, style = Typography.bodyLarge)
+        }
     }
-
+    Divider(thickness = 1.dp, modifier = Modifier.padding(start = 16.dp))
 }
+

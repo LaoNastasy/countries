@@ -9,15 +9,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.alitvinova.countriesapp.ui.theme.Purple100
 import com.alitvinova.countriesapp.ui.theme.Purple40
-import com.alitvinova.countriesapp.ui.theme.Purple80
+import com.alitvinova.countriesapp.ui.theme.TextPrimary
 import com.alitvinova.countriesapp.ui.theme.Typography
 import com.alitvinova.countriesapp.ui.theme.White
 
 @Composable
 fun FilterBadge(
     checked: Boolean,
-    placeholder: String,
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier,
 ) {
@@ -25,13 +26,13 @@ fun FilterBadge(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier.clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
-            containerColor = if (checked) Purple40 else Purple80
+            containerColor = if (checked) Purple40 else Purple100
         )
     ) {
         Text(
-            text = placeholder,
-            style = Typography.labelMedium,
-            color = White,
+            text = text,
+            style = Typography.labelLarge,
+            color = if(checked) White else TextPrimary,
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
         )
     }

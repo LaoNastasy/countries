@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.alitvinova.countriesapp.App
 import com.alitvinova.countriesapp.data.Repository
+import com.alitvinova.countriesapp.domain.entity.RegionalBloc
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -36,6 +37,9 @@ class CountriesListViewModel(
     }
 
     fun onFiltersChosen() {
+        _state.update {
+            it.copy(appliedFilter = state.value.filter)
+        }
         loadData()
         onFillerHide()
     }
@@ -44,7 +48,7 @@ class CountriesListViewModel(
         viewModelScope.launch {
             _state.update { it.copy(error = null, loading = true) }
             try {
-                val filter = state.value.filter
+                val filter = state.value.appliedFilter
                 val countries = if (filter != null) {
                     repository.getBlocCountries(filter)
                 } else {

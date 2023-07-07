@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +40,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.alitvinova.countriesapp.R
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
+import com.alitvinova.countriesapp.domain.entity.RegionalBloc
 import com.alitvinova.countriesapp.navigation.CountryInfoDestination
 import com.alitvinova.countriesapp.presentation.ErrorInfo
 import com.alitvinova.countriesapp.presentation.Loader
@@ -64,7 +66,7 @@ fun CountriesListScreen(
     ) {
         if (state.error != null) {
             ErrorInfo(viewModel::onRetryClick)
-        } else {
+        } else if (state.countries.isNotEmpty()) {
             Content(
                 state = state,
                 viewModel = viewModel,
@@ -111,8 +113,12 @@ private fun Content(
             )
             Spacer(Modifier.height(8.dp))
             FilterBadge(
-                checked = state.filter != null,
-                placeholder = stringResource(R.string.country_list_regional_bloc),
+                checked = state.appliedFilter != null,
+                text = if (state.appliedFilter != null) {
+                    state.appliedFilter.toStringRes()
+                } else {
+                    stringResource(R.string.country_list_regional_bloc)
+                },
                 onClick = viewModel::onFilterClick,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
@@ -141,30 +147,28 @@ private fun CountriesList(
 private fun CountryItem(
     country: CountryListItem,
     onClick: (CountryListItem) -> Unit,
+) = Card(
+    modifier = Modifier
+        .padding(horizontal = 16.dp, vertical = 6.dp)
+        .fillMaxWidth()
+        .clickable { onClick(country) },
+    shape = RoundedCornerShape(8.dp),
+    colors = CardDefaults.cardColors(
+        containerColor = BackgroundThirdly,
+    ),
+    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
 ) {
-    Card(
-        Modifier
-            .padding(horizontal = 16.dp, vertical = 6.dp)
-            .fillMaxWidth()
-            .clickable { onClick(country) },
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = BackgroundThirdly,
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    Row(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = country.flag,
-                contentDescription = null,
-                modifier = Modifier.size(48.dp),
-            )
-            Spacer(Modifier.width(16.dp))
-            Text(text = country.name, style = Typography.titleMedium)
-        }
+        AsyncImage(
+            model = country.flag,
+            contentDescription = null,
+            modifier = Modifier.size(48.dp),
+        )
+        Spacer(Modifier.width(16.dp))
+        Text(text = country.name, style = Typography.titleMedium)
     }
 }
 
@@ -172,38 +176,37 @@ private fun CountryItem(
 private fun SearchTextField(
     text: String,
     onTextChanged: (String) -> Unit,
-) {
-    TextField(
-        value = text,
-        onValueChange = onTextChanged,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        placeholder = {
-            Text(
-                text = stringResource(R.string.country_list_search_hint),
-                style = Typography.titleMedium,
-                color = TextSecondary,
-            )
-        },
-        textStyle = Typography.titleMedium,
-        singleLine = true,
-        colors = TextFieldDefaults.colors(
-            focusedTextColor = TextPrimary,
-            unfocusedTextColor = TextPrimary,
-            focusedContainerColor = BackgroundPrimary,
-            unfocusedContainerColor = BackgroundPrimary,
-            disabledContainerColor = BackgroundPrimary,
-            cursorColor = Purple40,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-        ),
-        shape = RoundedCornerShape(8.dp),
-        visualTransformation = VisualTransformation.None,
-    )
-}
+) = TextField(
+    value = text,
+    onValueChange = onTextChanged,
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp),
+    placeholder = {
+        Text(
+            text = stringResource(R.string.country_list_search_hint),
+            style = Typography.titleMedium,
+            color = TextSecondary,
+        )
+    },
+    textStyle = Typography.titleMedium,
+    singleLine = true,
+    colors = TextFieldDefaults.colors(
+        focusedTextColor = TextPrimary,
+        unfocusedTextColor = TextPrimary,
+        focusedContainerColor = BackgroundPrimary,
+        unfocusedContainerColor = BackgroundPrimary,
+        disabledContainerColor = BackgroundPrimary,
+        cursorColor = Purple40,
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+    ),
+    shape = RoundedCornerShape(8.dp),
+    visualTransformation = VisualTransformation.None,
+)
 
+@ReadOnlyComposable
 @Composable
 fun RegionalBloc.toStringRes() = stringResource(
     when (this) {

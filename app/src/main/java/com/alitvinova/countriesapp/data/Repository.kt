@@ -2,7 +2,7 @@ package com.alitvinova.countriesapp.data
 
 import com.alitvinova.countriesapp.domain.entity.CountryInfo
 import com.alitvinova.countriesapp.domain.entity.CountryListItem
-import com.alitvinova.countriesapp.presentation.list.RegionalBloc
+import com.alitvinova.countriesapp.domain.entity.RegionalBloc
 
 interface Repository {
     suspend fun getAllCountries(): List<CountryListItem>

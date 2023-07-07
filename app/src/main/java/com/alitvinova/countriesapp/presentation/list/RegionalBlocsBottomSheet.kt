@@ -18,9 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alitvinova.countriesapp.R
+import com.alitvinova.countriesapp.domain.entity.RegionalBloc
+import com.alitvinova.countriesapp.ui.theme.Purple100
 import com.alitvinova.countriesapp.ui.theme.Purple40
-import com.alitvinova.countriesapp.ui.theme.Purple80
 import com.alitvinova.countriesapp.ui.theme.PurpleGrey40
+import com.alitvinova.countriesapp.ui.theme.TextPrimary
 import com.alitvinova.countriesapp.ui.theme.Typography
 import com.alitvinova.countriesapp.ui.theme.White
 import com.google.accompanist.flowlayout.FlowRow
@@ -35,19 +37,19 @@ fun RegionalBlocsBottomSheet(viewModel: CountriesListViewModel) {
             text = stringResource(R.string.country_list_regional_bloc),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
+            style = Typography.titleLarge
         )
         Spacer(modifier = Modifier.height(8.dp))
         FlowRow(
             Modifier.padding(horizontal = 16.dp), mainAxisSpacing = 4.dp, crossAxisSpacing = 8.dp
         ) {
             blocks.forEach { (bloc, selected) ->
-
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(10.dp),
                     color = if (selected) {
                         Purple40
                     } else {
-                        Purple80
+                        Purple100
                     },
                 ) {
                     Text(
@@ -55,8 +57,8 @@ fun RegionalBlocsBottomSheet(viewModel: CountriesListViewModel) {
                         modifier = Modifier
                             .clickable(onClick = { viewModel.onBlocClick(bloc) })
                             .padding(horizontal = 12.dp, vertical = 6.dp),
-                        style = Typography.labelMedium,
-                        color = if (selected) White else Purple40,
+                        style = Typography.labelLarge,
+                        color = if (selected) White else TextPrimary,
                     )
                 }
             }
