@@ -1,6 +1,10 @@
 package com.alitvinova.countriesapp.presentation.info
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
@@ -16,11 +20,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,11 +38,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.AndroidUriHandler
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.alitvinova.countriesapp.R
 import com.alitvinova.countriesapp.domain.entity.CountryInfo
@@ -47,7 +60,10 @@ import com.alitvinova.countriesapp.ui.theme.Typography
 import kotlinx.coroutines.delay
 
 @Composable
-fun CountryInfoScreen(viewModel: CountryInfoViewModel) {
+fun CountryInfoScreen(
+    viewModel: CountryInfoViewModel,
+    navController: NavController,
+) {
     val state = viewModel.state.collectAsState().value
 
     Box(
@@ -58,7 +74,13 @@ fun CountryInfoScreen(viewModel: CountryInfoViewModel) {
         if (state.error != null) {
             ErrorInfo(viewModel::onReloadClick)
         } else if (state.info != null) {
-            Content(info = state.info, countryCode = state.code)
+            Content(
+                info = state.info,
+                countryCode = state.code,
+                onBackClick = {
+                    navController.navigateUp()
+                }
+            )
         }
         if (state.loading) Loader()
     }
@@ -83,7 +105,11 @@ private fun getImageIdByCountryCode(code: String): Int? {
 
 @OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
-private fun Content(info: CountryInfo, countryCode: String) {
+private fun Content(
+    info: CountryInfo,
+    countryCode: String,
+    onBackClick: () -> Unit,
+) {
     var atEnd by remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -104,6 +130,18 @@ private fun Content(info: CountryInfo, countryCode: String) {
                     ),
                     contentDescription = null,
                     modifier = Modifier.fillMaxWidth(),
+                )
+            }
+            IconButton(
+                onClick = onBackClick,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(12.dp)
+                    .size(35.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.arrow_back),
+                    contentDescription = null,
                 )
             }
             Column(
@@ -171,6 +209,7 @@ private fun ListFields(info: CountryInfo) {
         )
     }
     if (info.googleMapLink != null) {
+        val context = LocalContext.current
         InfoItem(
             title = stringResource(R.string.country_info_map),
             value = info.googleMapLink,
@@ -180,6 +219,10 @@ private fun ListFields(info: CountryInfo) {
                     contentDescription = null,
                     tint = Purple40
                 )
+            },
+            clickable = true,
+            onClick = {
+                context.tryStartActivityUrl(info.googleMapLink, "")
             }
         )
     }
@@ -230,9 +273,11 @@ private fun ListFields(info: CountryInfo) {
 
 @Composable
 private fun InfoItem(
-    title: String?,
+    title: String,
     value: String,
-    image: (@Composable () -> Unit)? = null
+    clickable: Boolean = false,
+    image: (@Composable () -> Unit)? = null,
+    onClick: () -> Unit = {},
 ) = Column(Modifier.fillMaxWidth()) {
     Row(
         Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -243,13 +288,45 @@ private fun InfoItem(
             Spacer(Modifier.width(12.dp))
         }
         Column {
-            if (title != null) {
-                Text(text = title, style = Typography.labelMedium)
-                Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = title,
+                style = Typography.labelMedium
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+            if (clickable) {
+                ClickableText(text = buildAnnotatedString {
+                    pushStringAnnotation(tag = "link", annotation = value)
+                    withStyle(
+                        style = SpanStyle(
+                            textDecoration = TextDecoration.Underline,
+                            fontFamily = Typography.bodyLarge.fontFamily,
+                            fontSize = Typography.bodyLarge.fontSize,
+                            fontWeight = Typography.bodyLarge.fontWeight,
+                            fontStyle = Typography.bodyLarge.fontStyle,
+                            fontSynthesis = Typography.bodyLarge.fontSynthesis,
+                            fontFeatureSettings = Typography.bodyLarge.fontFeatureSettings
+                        ), block = {
+                            append(value)
+                        }
+                    )
+                }, onClick = { onClick() })
+            } else {
+                Text(text = value, style = Typography.bodyLarge)
             }
-            Text(text = value, style = Typography.bodyLarge)
         }
     }
     Divider(thickness = 1.dp, modifier = Modifier.padding(start = 16.dp))
 }
 
+fun Context.tryStartActivityUrl(
+    url: String,
+    errorMessage: String,
+) {
+    try {
+        AndroidUriHandler(this).openUri(url)
+    } catch (e: ActivityNotFoundException) {
+        Log.e("START ACTIVITY", e.message ?: "")
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+}

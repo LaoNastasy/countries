@@ -72,7 +72,8 @@ class MainActivity : ComponentActivity() {
         },
         CountryInfoDestination to {
             CountryInfoScreen(
-                viewModel = viewModel(factory = CountryInfoViewModel.Factory)
+                viewModel = viewModel(factory = CountryInfoViewModel.Factory),
+                navController = navController,
             )
         }
     )
