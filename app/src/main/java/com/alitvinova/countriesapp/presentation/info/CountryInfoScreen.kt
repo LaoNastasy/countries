@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
@@ -222,7 +223,10 @@ private fun ListFields(info: CountryInfo) {
             },
             clickable = true,
             onClick = {
-                context.tryStartActivityUrl(info.googleMapLink, "")
+                context.tryStartActivityUrl(
+                    url = info.googleMapLink,
+                    errorMessageRes = R.string.country_info_link_error
+                )
             }
         )
     }
@@ -321,12 +325,12 @@ private fun InfoItem(
 
 fun Context.tryStartActivityUrl(
     url: String,
-    errorMessage: String,
+    @StringRes errorMessageRes: Int,
 ) {
     try {
         AndroidUriHandler(this).openUri(url)
     } catch (e: ActivityNotFoundException) {
         Log.e("START ACTIVITY", e.message ?: "")
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, this.resources.getText(errorMessageRes), Toast.LENGTH_SHORT).show()
     }
 }

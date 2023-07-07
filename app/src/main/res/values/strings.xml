@@ -26,4 +26,6 @@
     <string name="country_info_capital">Capital</string>
     <string name="country_info_continent">Continent</string>
     <string name="country_info_continents">Continents</string>
+    <string name="country_info_link_error">It seems you have not needed application</string>
+
 </resources>
