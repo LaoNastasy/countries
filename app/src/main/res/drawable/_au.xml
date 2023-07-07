@@ -322,12 +322,12 @@
     <target android:name="map">
         <aapt:attr name="android:animation">
             <set>
-                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="translateX" android:valueFrom="-30.767" android:valueTo="-614.921319650655" android:valueType="floatType"/>
-                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="translateY" android:valueFrom="-241.591" android:valueTo="-563.0626" android:valueType="floatType"/>
-                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="scaleX" android:valueFrom="1" android:valueTo="3.7841607260300676" android:valueType="floatType"/>
-                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="scaleY" android:valueFrom="1" android:valueTo="3.7841607260300676" android:valueType="floatType"/>
-                <objectAnimator android:duration="14" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="pivotX" android:valueFrom="30.767" android:valueTo="614.921319650655" android:valueType="floatType"/>
-                <objectAnimator android:duration="14" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="pivotY" android:valueFrom="241.591" android:valueTo="563.0626" android:valueType="floatType"/>
+                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="translateX" android:valueFrom="-30.767" android:valueTo="-477.5628017008066" android:valueType="floatType"/>
+                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="translateY" android:valueFrom="-241.591" android:valueTo="-482.81999640174666" android:valueType="floatType"/>
+                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="scaleX" android:valueFrom="1" android:valueTo="1.6269057115473446" android:valueType="floatType"/>
+                <objectAnimator android:duration="2000" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="scaleY" android:valueFrom="1" android:valueTo="1.6269057115473446" android:valueType="floatType"/>
+                <objectAnimator android:duration="14" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="pivotX" android:valueFrom="30.767" android:valueTo="477.5628017008066" android:valueType="floatType"/>
+                <objectAnimator android:duration="14" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="pivotY" android:valueFrom="241.591" android:valueTo="482.81999640174666" android:valueType="floatType"/>
             </set>
         </aapt:attr>
     </target>

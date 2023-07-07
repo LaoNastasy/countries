@@ -46,8 +46,7 @@ fun generateAnimationXml(
         .childNodes.item(1)
         .childNodes.item(1)
     val viewportWidth = vector.attributes.getNamedItem("android:viewportWidth").nodeValue.toDouble()
-    val viewportHeight =
-        vector.attributes.getNamedItem("android:viewportHeight").nodeValue.toDouble()
+    val viewportHeight = vector.attributes.getNamedItem("android:viewportHeight").nodeValue.toDouble()
 
     val group = vector.childNodes.item(1)
     val paths = group.childNodes
@@ -87,6 +86,9 @@ fun generateAnimationXml(
 
     val countryWidth = rightBorder - leftBorder
     val countryHeight = bottomBorder - topBorder
+
+    val countryAverageScale = Math.min(viewportWidth/countryWidth, viewportHeight/countryHeight)
+    val paddingPercentage = 1.5 - (3/countryAverageScale)
 
     var viewWidth = countryWidth + countryWidth * paddingPercentage * 2
     var viewHeight = countryHeight + countryHeight * paddingPercentage * 2
@@ -133,9 +135,7 @@ fun generateAnimationXml(
     for (i in 0 until objectAnimatorSet.length) {
         val item = objectAnimatorSet.item(i)
         if (item.hasAttributes()) {
-            val propertyName =
-                objectAnimatorSet.item(i).attributes.getNamedItem("android:propertyName").nodeValue
-
+            val propertyName = objectAnimatorSet.item(i).attributes.getNamedItem("android:propertyName").nodeValue
             fun addAttrib(name: String, value: String) {
                 val attr = doc.createAttribute(name)
                 attr.value = value
