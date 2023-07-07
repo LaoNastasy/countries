@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CountriesApp</string>
+    <string name="app_name">Countries Demo</string>
     <string name="error_text">Something went wrong</string>
     <string name="error_action">Try again</string>
 
