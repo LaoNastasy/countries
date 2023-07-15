@@ -27,7 +27,17 @@ class CountriesListViewModel(
 
     fun onRetryClick() = loadData()
 
-    fun onSearchStringChanged(string: String) = _state.update { it.copy(searchString = string) }
+    fun onSearchStringChanged(string: String) = _state.update { oldState ->
+        oldState.copy(
+            searchString = string,
+            filteredCountries = oldState.countries.filter {
+                it.name.contains(
+                    string,
+                    ignoreCase = true
+                )
+            }
+        )
+    }
 
     fun onFilterClick() = _state.update { it.copy(openRegionFilers = true) }
 
@@ -51,11 +61,9 @@ class CountriesListViewModel(
             } else {
                 repository.getAllCountries()
             }
-            _state.update { it.copy(countries = countries) }
+            _state.update { it.copy(countries = countries, loading = false) }
         } catch (e: DomainException) {
-            _state.update { it.copy(error = e) }
-        } finally {
-            _state.update { it.copy(loading = false) }
+            _state.update { it.copy(error = e, loading = false) }
         }
     }
 

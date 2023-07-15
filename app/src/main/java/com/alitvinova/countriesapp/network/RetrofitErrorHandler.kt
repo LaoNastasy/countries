@@ -14,7 +14,7 @@ class RetrofitErrorHandler {
     suspend fun <T : Any> apiCall(
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
         call: suspend () -> Response<T>
-    ): T = withContext(dispatcher) {
+    ): T? = withContext(dispatcher) {
         val response: Response<T>
         try {
             response = call.invoke()
@@ -23,13 +23,7 @@ class RetrofitErrorHandler {
         }
 
         if (response.isSuccessful) {
-            val body = response.body()
-            if (body == null) {
-                val request = (response.raw() as okhttp3.Response).request
-                throw Exception("response.body() cannot be null for ${request.method} ${request.url}")
-            } else {
-                return@withContext body
-            }
+            return@withContext response.body()
         } else {
             throw DomainException.Unknown
         }

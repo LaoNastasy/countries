@@ -17,17 +17,18 @@ class RepositoryImpl(
     override suspend fun getAllCountries(): List<CountryListItem> =
         retrofitErrorHandler.apiCall {
             api.getAllCountries()
-        }.map(CountryListItemModel::asDomainModel)
+        }?.map(CountryListItemModel::asDomainModel).orEmpty()
 
     override suspend fun getCountryInfoByCode(code: String): CountryInfo =
-        retrofitErrorHandler.apiCall {
+        requireNotNull(retrofitErrorHandler.apiCall {
             api.getCountryInfo(code)
-        }.first().asDomainModel()
+        }
+        ).first().asDomainModel()
 
     override suspend fun getBlocCountries(bloc: RegionalBloc): List<CountryListItem> =
         retrofitErrorHandler.apiCall {
             api.getFilteredCountries(bloc.toServerModel())
-        }.map(CountryBlocListItemModel::asDomainModel)
+        }?.map(CountryBlocListItemModel::asDomainModel).orEmpty()
 }
 
 private fun CountryListItemModel.asDomainModel() = CountryListItem(

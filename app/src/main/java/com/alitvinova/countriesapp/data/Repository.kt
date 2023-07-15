@@ -7,7 +7,7 @@ import com.alitvinova.countriesapp.domain.entity.RegionalBloc
 interface Repository {
     suspend fun getAllCountries(): List<CountryListItem>
 
-    suspend fun getCountryInfoByCode(code: String): CountryInfo
+    suspend fun getCountryInfoByCode(code: String): CountryInfo?
 
     suspend fun getBlocCountries(bloc: RegionalBloc): List<CountryListItem>
 }
